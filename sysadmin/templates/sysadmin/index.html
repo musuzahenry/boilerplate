@@ -1,0 +1,39 @@
+
+{% extends 'main/base.html' %}
+
+
+
+{% block content %}
+
+<div class="col-12 col-md-3"></div>
+
+
+<div class="col-12 col-md-6 login-div">
+   
+    <div class="row" style="margin-top: 30px;">
+        <div class="col-12">
+         <p style="text-align: center; margin-bottom: 10px;">
+            <img style="width:250px;" src="{{ sys_info.app_logo.url }}" alt="App Logo" />
+        </p>
+        </div>
+    </div>
+
+        <h1>{{ sys_info.app_name }}</h1>
+        <h3>Login</h3>
+        <form method="post" class="login-form">
+            {% csrf_token %}
+            {{form}}
+            <button type="Submit" class="btn btn-info btn-sm" style="margin-top: 3px;"> 
+            <i class="fa fa-power-off"></i> Login</button>
+        </form>
+
+       {% for message in messages %}
+       <p style="background-color: red; color:white; text-align: center;">
+         {{message}}
+       </p>
+       {% endfor %}
+</div>
+
+ <div class="col-12 col-md-3"></div>
+
+{% endblock %}

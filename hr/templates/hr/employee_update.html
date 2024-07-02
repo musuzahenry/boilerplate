@@ -1,0 +1,118 @@
+{% extends 'hr/index.html' %}
+
+{% block content %}
+
+{% include 'hr/header.html' %}
+
+
+<div class="row">
+
+    <div class="col-12">
+<h4 class="page-title">EDIT EMPLOYEE</h4>
+ <a href="{% url 'hr:employee-details'  employee.pk %}" class="btn btn-sm btn-info inner-btn">
+    <i class="fa fa-list"></i> Employee Details</button>  </a> 
+
+<p style="margin-bottom: 4px;">Employee No: <b>{{employee.emp_no}}</b> Fullname: 
+    <b>{{employee.surname}} {{employee.firstname}} {% if employee.othername %}{{employee.othername}}{% endif %}</b> </p>
+</div>
+</div>
+
+    <form method="POST" action="" class="row" enctype="multipart/form-data">
+        {% csrf_token %}
+
+    <div class="col-md-3">
+
+        <label>Upload Employee image</label>
+        {{form.employee_image}}
+
+        <label>Upload Academic Documents</label>
+        {{form.academic_documents_upload}}
+
+    </div>
+    <div class="col-12 col-md-3">
+
+        <label>Surname</label>
+        {{form.surname}}
+        <label>First name</label>
+        {{form.firstname}} 
+        <label>Surname</label>
+        {{form.gender}}
+        <label>Date of Birth</label>
+        {{form.date_of_birth}}
+        <label>Surname</label>
+        {{form.NIN}}
+
+    </div>
+    <div class="col-12 col-md-3">
+        <label>Contacts</label>
+        {{form.phone_contacts}}
+        <label>Email Address</label>
+        {{form.email_address}}
+        <label>Address</label>
+        {{form.address}}
+        <label>Date of Hire</label>
+        {{form.date_of_hire}}
+        <label>Position</label>
+        {{form.positionID}}
+        <label>Employee Title</label>
+        {{form.employee_title}}  
+        <label>Qualifications</label>    
+        {{form.qualifications}}
+        
+    </div>
+
+    <div class="col-12 col-md-3">
+        <P style="margin-top: 10px;;"><span class="btn btn-primary btn-sm" data-bs-target="#banking" data-bs-toggle="collapse">
+            Salary/NSSF/PAYE/Banking &nbsp; <i class="fa fa-arrow-down"></i></span></P>
+
+        <div class="collapse" id="banking">
+        <label>Bank</label>
+        {{form.bank_name}}
+        <label>Branch (For Bank)</label>
+        {{form.bank_branch}}
+        <label>Account No</label>
+        {{form.bank_account_no}}
+        <label>NSSF NO:</label>
+        {{form.NSSF_NO}}
+        <label>NSSF Amount</label>
+        {{form.nssf}}
+        <label>PAYE</label>
+        {{form.PAYE}}
+        <label>Net Salary</label>
+        {{form.net_salary}}
+        </div>
+
+          <P style="margin-top: 10px;;"><span class="btn btn-primary btn-sm" data-bs-target="#kin" data-bs-toggle="collapse">
+            Next Of Kin Detailss&nbsp; <i class="fa fa-arrow-down"></i></span></P>
+
+        <div class="collapse" id="kin">
+            <p style="margin: 2px;"><b>Next Of Kin 1</b></p>
+            <label>Next Of Kin Name</label>
+            {{form.next_of_kin_names}}
+            <label>Surname</label>
+            {{form.next_of_kin_contacts}}
+            <label>Surname</label>
+            {{form.next_of_kin_address}}  
+
+            <p style="margin: 2px;"><b>Next Of Kin 2</b></p>
+            <label>Next Of Kin Name</label>
+            {{form.next_of_kin2_names}}
+            <label>Surname</label>
+            {{form.next_of_kin2_contacts}}
+            <label>Surname</label>
+            {{form.next_of_kin2_address}}  
+   
+        </div>
+
+        <div style="margin-top: 20px;">     
+            <button class="btn btn-success" type="submit"><i class="fa fa-pencil"></i> Save</button>
+         </div>
+    </div>
+
+
+
+</form>
+
+
+
+{% endblock %}

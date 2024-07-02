@@ -1,0 +1,83 @@
+
+
+{% extends 'hr/index.html' %}
+
+{% block content %}
+    {% include request.session.current_header %}
+
+    <div class="row">
+      <div class="col-12">
+         <h3 class="page-title">ADD EMPLOYEE</h3>
+      </div>
+    </div>
+
+<div class="row">
+  <div class="col-12">
+     <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}          
+            <div class ="row">
+              <div class ="col-12 col-md-2"></div>
+              <div class="col-12 col-md-4">
+              <input type="hidden" name="add-employee" value="0">
+
+              <label style="width:100%;">Surname</label>
+              <input  id="paper-editID" style="width:100%;" type="text" name="surname" required />
+              <label style="width:100%;">First Name</label>
+              <input  id="firstname" style="width:100%;" type="text" name="firstname" required />
+              <label style="width:100%;">Other Names</label>
+              <input  id="othername" style="width:100%;" type="text" name="othername" />
+              <label style="width:100%;" for="gender">Gender</label>
+              <select style="width:100%;" name="gender">
+                <option value="--">--Choose--</option>
+                <option value="Male">Male</option>
+                <option value="Male">Female</option>
+              </select>
+
+              <label style="width:100%;">Date Of Birgh</label>
+              <input  id="date-of-birth" style="width:100%;" type="date" name="date_of_birth" required />
+              
+              <label style="width:100%;" for="nin" style="font-size:13px;">National Identification Number</label>
+              <input  id="nin" style="width:100%;" type="text" name="NIN" />
+
+                <label style="width:100%;" name="date-of-hire">Date Of Hire</label>
+                <input  id="date-of-hire" style="width:100%;" type="date" name="date_of_hire" required /> 
+
+            </div>
+
+              <div class ="col-12 col-md-4">
+ 
+              <label style="width:100%;" for="employee-title">Employee Title</label>
+              <input  id="employee-title" style="width:100%;" type="text" name="employee_title" />
+              
+              
+              <label style="width:100%;" for="qualifications">Qualifications</label>
+              <input  id="qualifications" style="width:100%;" type="text" name="qualifications" />
+              
+
+              <label style="width:100%;" for="positionID">Position
+              </label>
+              <select  style="width:100%;" id="positionID" name="positionID">
+                {% for position in positions %}
+                <option value="{{position.id}}">{{position.position_name}}</option>
+                {% endfor %}
+              </select>
+               
+              <label style="width:100%;" for="address">Address</label>
+              <input  id="address" style="width:100%;" type="text" name="address" >  
+
+              <label style="width:100%;" for="contacts">Contacts(Separate by comma)</label>
+              <input  id="contacts" style="width:100%;" type="text" name="phone_contacts" />
+
+              <button class="btn btn-sm btn-info">Submit</button>              
+            </div>   
+
+               </div>
+          
+     </form>
+     </div>
+</div>
+
+
+    {% include request.session.current_footer %}
+{% endblock%}
+

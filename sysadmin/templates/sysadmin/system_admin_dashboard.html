@@ -1,0 +1,120 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load humanize %}
+
+
+    <div class="row">
+       
+        {% block content %}
+
+        {% include request.session.current_header %}
+            
+ 
+        <div class="col-12 col-md-4">
+            <h4>
+                {{user_employee.surname}} {{user_employee.firstname}} {{user_employee.othernames}}
+            </h4>
+
+              <p class="bg-info text-white">
+              Is employee going to use the system?
+              </p>
+              <form method="POST">
+                  {% csrf_token %}
+                  
+              <select name="is-system-user" style="width:100%;">
+                  {% if user_employee.is_system_user %}
+                  <option value="Yes">Yes</option>
+                  {% else %}
+                  <option value="No">No</option>
+                  {% endif %}
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+              </select>
+
+              <label style="width:100%;" class="bg-info text-white"for="system-roleID">Please Choose System Role</label>
+                <select style="width:100%;" id="system-roleID" name="system-roleID">  
+                  <option value="{{user_employee.system_roleID.id}}">{{user_employee.system_roleID.user_friendly_name}}</option>
+                  <option value="{{roles.id}}">{{roles.role_name}}</option>
+                  {% for roles in role_list %}
+                  <option value="{{roles.id}}">{{roles.role_name}}</option>
+                  {% endfor %}
+                </select>
+              
+              <button class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Save</button>  
+              </form><br/>
+
+        </div>
+
+
+        
+
+
+        <div class="col-12 col-md-4">
+
+            <h4>{% if current_user %} Edit {% else %} Add {% endif %} user credentials</h4>
+
+            <form action="'system-admin-dashboard'" method="POST">
+                {% csrf_token %}
+
+                <input type="hidden" name="add-new-user" value="0">
+
+
+                <label style="width:100%;" class="bg-info  text-white">User Name</label>
+                <input style="width:100%;" type="text" name="add-username" value="{{user_employee.userID.username}}" />
+
+                <label style="width:100%;" class="bg-info text-white"> Password</label>
+                <input style="width:100%;" type="password" name="password" required> 
+
+                <label style="width:100%;" class="bg-info  text-white">Confirm Password</label>
+                <input style="width:100%;" type="password" name="confirm-password" required>
+                 <p>
+                <button class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Save</button>
+                </p>
+            </form>
+          
+        </div>
+
+
+        <div class="col-12 col-md-4">
+            
+            <table class="table table-striped">    
+                <thead class="text-white bg-info">
+                    <tr>
+                        <td colspan="2">System Specific Details</td>
+                    </tr>
+                </thead>
+                <tr>
+                    <td>Fullname</td>
+                    <td>{{user_employee.surname}} {{user_employee.firstname}} {{user_employee.othernames}}</td>
+                </tr>
+                <tr>
+                    <td>Username</td>
+                    <td>{{user_employee.userID}}</td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td>xxxx</td>
+                </tr>
+                <tr>
+                    <td>User Role</td>
+                    <td>{{user_employee.system_roleID.role_name}}</td>
+                </tr>
+                <tr>
+                    <td>Is System User</td>
+                    <td>{{user_employee.is_system_user}}</td>
+                </tr>
+            '</table>
+
+
+        </div>
+            
+
+
+        {% include request.session.current_footer %}
+
+{% endblock %}
+
+
+
+
+ <!-- Footer -->

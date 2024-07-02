@@ -1,0 +1,18 @@
+
+</div><!-- close innner container-->
+<div class="row bg-dark text-white" id="footer">
+ <div class="col-12">
+        <p style="text-align: center;  font-size: 14px;">
+            Copyright &copy; {% now 'Y' %} {{ request.session.app_name }}
+            {{request.session.app_footer}}
+        </p>
+    </div>
+</div>
+
+</div><!-- closes the main container -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+{% include 'main/js.html' %}
+</body>
+
+</html>

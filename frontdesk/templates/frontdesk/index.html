@@ -1,0 +1,36 @@
+
+
+<!-- 
+Store templates will inherit this file
+-->
+
+
+{% extends "main/base.html" %}
+
+<div class="row">
+
+    {% for message in messages %}
+    <p style="background: white;" class="bg-danger">{{message}}</p>
+    {% endfor %}
+    </div>
+
+    {% block content %}
+        {% include request.session.current_header %}
+
+            <h1>Front Desk Dashboard</h1>
+
+
+            {% include request.session.current_footer %}
+    {% endblock %}
+
+</div>
+
+
+
+
+
+
+
+
+
+

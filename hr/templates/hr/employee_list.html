@@ -1,0 +1,113 @@
+
+
+{% extends 'hr/index.html' %}
+
+
+{% block content %}
+{% include 'hr/header.html' %}
+<div class="row">
+
+  <div class="col-12">
+    <h3 class="page-title">EMPLOYEE LIST</h3>
+    <button data-bs-target="#pay-all" data-bs-toggle="modal"
+       class="btn btn-info btn-sm inner-btn"><i class="fa fa-pencil"></i> Generate Pay Roll
+  </button>
+
+        <table class="table table-striped">
+        <thead>
+            <tr class="bg-info text-white">
+                <td>Pay Roll</td>
+                <td>Employee NO:</td>
+                <td>Fullname</td>
+                <td>Position</td>
+                <td>Address</td>
+                <td>Contacts</td>
+            </tr>
+        </thead>
+        <tbody>
+        {% for employee in object_list %}
+        <tr>
+            <td><a href="{% url 'hr:update-employee' pk=employee.pk %}">
+            <span style="border-right:1px solid black; border-radius: 4px; padding: 3px; "><i class="fa fa-plus"></i> Pay </span></a> </td>
+        <td><a href="{% url 'hr:update-employee' pk=employee.pk %}">{{employee.emp_no}}</a> </td>
+        <td><a href="{% url 'hr:update-employee' pk=employee.pk %}">{{employee.surname}} {{employee.firstname}} {{employee.othernames}}</a></td>
+        <td><a href="{% url 'hr:update-employee' pk=employee.pk %}">{{employee.positionID.position_name}} </a></td>
+        <td><a href="{% url 'hr:update-employee' pk=employee.pk %}">{{employee.address}} </a></td>
+        <td><a href="{% url 'hr:update-employee' pk=employee.pk %}">{{employee.phone_contacts}} </a>
+        </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6">Count: {{count}}</td>
+            </tr>
+        </tfoot>
+        </table>
+
+
+
+     </div>
+</div>
+
+
+
+<div class="row">
+    
+    <div class="modal" id="pay-all">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Pay For All</h3>
+            </div>
+            <p style="text-align: right; width:100%; padding-right: 20px; margin: 0px; ">
+                <i class="btn btn-sm btn-close btn-danger" data-bs-dismiss="modal" aria-label="Close" 
+                  style="text-align: center; width:30px; height: 30px; background-color: red !important;">
+                <span class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="width:100%;">
+                </span>
+            </i>
+            </p>
+
+        <div class="modal-body">
+        <form>
+            {% csrf_token %}
+        <P style="margin: 0px; text-align: center;"><b>PAY ALL</b></span></P>
+        <table class="table table-striped">
+          <input type="hidden" value="yes" name="pay-all">
+        <tr>
+            <td><b>SALARY</b></td>
+            <td><input type="radio" id="html" name="salary" value="HTML" checked /></td><td>Yes</td>
+            <td><input type="radio" id="css" name="salary" value="CSS" /></td> <td> No </td>       
+        </tr>
+         <tr>
+            <td><b>NSSF</b></td>
+            <td><input type="radio" id="css" name="nssf" value="yes" checked /></td> <td>Yes</td>
+            <td><input type="radio" id="html" name="nssf" value="no" /></td><td>No</td>
+        </tr>
+
+         <tr>
+            <td ><b>PAYE</b></td>
+            <td><input type="radio" id="css" name="paye" value="yes" checked/></td> <td>Yes</td>
+            <td><input type="radio" id="html" name="paye" value="no" /></td><td>No</td>
+        </tr>
+        <tr><td colspan="5">
+            <label style="background-color: gray; width:100%;">Percentage Payment(%100)</label>
+            <input style="width:100%;" type="number"  value="100" name="percentage-pay"/>
+        </td></tr>
+        </table>
+
+        <button class="btn btn-sm  btn-info inner-btn"><i class="fa fa-plus"></i> &nbsp;Pay Now</button>
+
+ 
+
+        </form>
+    </div>
+    </div>
+</div>
+</div>
+</div>
+
+
+{% include 'hr/footer.html' %}
+{% endblock%}
+
