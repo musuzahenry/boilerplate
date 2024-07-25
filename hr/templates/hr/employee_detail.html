@@ -17,7 +17,14 @@
           <a class="btn btn-sm btn-info inner-btn" href="{% url 'hr:update-employee' pk=object.pk %}">
             <i class="fa fa-pencil"></i>&nbsp; Edit Details</a>
 
-           <p><img style="width:200px; height: 200px; border:1px solid black; border-radius: 4px;" src="{{object.employee_image.url}}" alt="image"/></p>
+
+           <p><img style="width:200px; height: 200px; border:1px solid black; border-radius: 4px;" 
+            {% if object.employee_image %} 
+            src="{{object.employee_image.url}}"
+            {% else %}
+            src=""
+            {% endif %} alt="image"/> 
+          </p>
            
         </div>
 
@@ -41,10 +48,10 @@
       <table class="table table-striped table-bordered">
         <tr><td colspan="2" class="bg-info text-white"><b>PROFESSIONAL</b></td></tr>
        <tr><td class="table-title"><b>Date Of Hire</b></td><td>{{object.date_of_hire}}</td></tr>
-       <tr><td class="table-title"><b>Employee Titla</b></td> <td>{{object.employee_title}}</td></tr>
+       <tr><td class="table-title"><b>Employee Title</b></td> <td>{{object.employee_title}}</td></tr>
        <tr><td class="table-title"><b>Position</b></td> <td>{{object.positionID}}</td></tr>
        <tr><td class="table-title"><b>Qualifications</b></td> <td>{{object.qualifications}}</td></tr>
-       <tr><td class="table-title"><b>Gender</b></td><td>
+       <tr><td class="table-title"><b>Academic Documents</b></td><td>
         {% if object.academic_documents_upload %} <a href="{{object.academic_documents_upload.url}}">Academic Documents </a> 
           {% else %}  No Documents {% endif %}
       </td></tr>

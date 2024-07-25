@@ -2,20 +2,45 @@
 
 {% block content %}
 
-{% include 'hr/header.html' %}
+{% include request.session.current_header %}
 
+
+<div class="row">
+    <div class="modal" id="delete">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title" id="pay-one-name"><b>Are you sure wou want to delete?</b></p>
+                </div>
+                <div class="modal-body">
+                <table><tr>
+                    <td><button class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancel</button></td> 
+                    <td><a href="{% url 'hr:delete-employee' employee.id %}" class="btn btn-success btn-sm">Yes, delete</a></td>                   
+                 </tr></table>  
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="row">
 
     <div class="col-12">
 <h4 class="page-title">EDIT EMPLOYEE</h4>
- <a href="{% url 'hr:employee-details'  employee.pk %}" class="btn btn-sm btn-info inner-btn">
-    <i class="fa fa-list"></i> Employee Details</button>  </a> 
+
+<table><tr>
+<td><a style="margin: 0px;" href="{% url 'hr:employee-details'  employee.pk %}" class="btn btn-sm btn-info inner-btn">
+   <i class="fa fa-list"></i> Employee Details</a> </td>
+   <td><button style="margin: 0px;" class="btn btn-danger btn-sm" data-bs-target="#delete" data-bs-toggle="modal"><i class="fa fa-trash"></i> &nbsp;Delete</button></td>
+ </tr></table>
 
 <p style="margin-bottom: 4px;">Employee No: <b>{{employee.emp_no}}</b> Fullname: 
     <b>{{employee.surname}} {{employee.firstname}} {% if employee.othername %}{{employee.othername}}{% endif %}</b> </p>
 </div>
 </div>
+
+
+
 
     <form method="POST" action="" class="row" enctype="multipart/form-data">
         {% csrf_token %}
@@ -35,7 +60,7 @@
         {{form.surname}}
         <label>First name</label>
         {{form.firstname}} 
-        <label>Surname</label>
+        <label>Gender</label>
         {{form.gender}}
         <label>Date of Birth</label>
         {{form.date_of_birth}}
@@ -83,28 +108,28 @@
         </div>
 
           <P style="margin-top: 10px;;"><span class="btn btn-primary btn-sm" data-bs-target="#kin" data-bs-toggle="collapse">
-            Next Of Kin Detailss&nbsp; <i class="fa fa-arrow-down"></i></span></P>
+            Next Of Kin Details &nbsp; <i class="fa fa-arrow-down"></i></span></P>
 
         <div class="collapse" id="kin">
             <p style="margin: 2px;"><b>Next Of Kin 1</b></p>
             <label>Next Of Kin Name</label>
             {{form.next_of_kin_names}}
-            <label>Surname</label>
+            <label>Contacts</label>
             {{form.next_of_kin_contacts}}
-            <label>Surname</label>
+            <label>Address</label>
             {{form.next_of_kin_address}}  
 
             <p style="margin: 2px;"><b>Next Of Kin 2</b></p>
             <label>Next Of Kin Name</label>
             {{form.next_of_kin2_names}}
-            <label>Surname</label>
+            <label>Contacts</label>
             {{form.next_of_kin2_contacts}}
-            <label>Surname</label>
+            <label>Address</label>
             {{form.next_of_kin2_address}}  
    
         </div>
 
-        <div style="margin-top: 20px;">     
+        <div style="margin-top: 20px;">    
             <button class="btn btn-success" type="submit"><i class="fa fa-pencil"></i> Save</button>
          </div>
     </div>
@@ -113,6 +138,6 @@
 
 </form>
 
-
+{% include request.session.current_footer %}
 
 {% endblock %}

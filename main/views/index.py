@@ -27,9 +27,7 @@ class Index:
                                                                 request, 
                                                                 right_name =request.POST.get("dashboard-redirect").split(":")[0]
                                                                  )
-                if access_obj["allow_to_pass"] and access_obj["is_logged_in"]:
-
-                    
+                if access_obj["allow_to_pass"] and access_obj["is_logged_in"]:   
                     #set the header before reirection and foooter
                     GLOBAL_DEFS.set_dashboard_header_and_footer(request, request.POST.get("dashboard-redirect"))
                     return redirect (request.POST.get("dashboard-redirect"))

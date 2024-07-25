@@ -2,10 +2,10 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate
-from . global_views import GlobalView
+from global_views . global_views import GlobalView
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from .models import Employee, SystemRoles
+from sysadmin.models import Employee, SystemRoles
 
 
 

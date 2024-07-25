@@ -1,0 +1,148 @@
+
+<script>
+//Employee js
+//=================================================================
+$(".pay-emp").click(function(){ 
+    /*Editing subject js & */  
+    values = $(this).attr("id").split("-")   
+    $("#personID").val(values[0])
+    $("#fullname").val(values[1])
+})
+
+
+$(".custom-pay").on('input', function(){
+  $(".salary-nssf-paye").prop("checked", false)
+})
+
+
+//Export cashbook to excel
+//====================================================================================
+$(".export-to-excel").click(function(){
+  //alert("kkkkkkkkkkkk")
+  $("td").find("form").remove(".tbl-edit-form")
+  $("#cashbook").table2excel({  
+    exclude: "",
+    name: "Worksheet Name",
+    filename: "CashBook.xls", // do include extension
+    preserveColors: true // set to true if you want background colors and font colors preserved
+})
+});
+
+
+
+$(".export-to-excel-client").click(function(){
+  //alert("kkkkkkkkkkkk")
+  $("td").find("form").remove(".tbl-edit-form")
+  $("#list-clients").table2excel({  
+    exclude: "",
+    name: "Worksheet Name",
+    filename: "Clients.xls", // do include extension
+    preserveColors: true // set to true if you want background colors and font colors preserved
+})
+});
+
+
+
+$(".export-to-excel-file").click(function(){
+  //alert("kkkkkkkkkkkk")
+  $("td").find("form").remove(".tbl-edit-form")
+  $("#file-export").table2excel({  
+    exclude: "",
+    name: "Worksheet Name",
+    filename: "File.xls", // do include extension
+    preserveColors: true // set to true if you want background colors and font colors preserved
+})
+});
+
+
+
+
+
+
+
+
+
+$(".btn-add-role").click(function(){
+            /* submitting editing form */
+            if(("#role-name").val()==""){
+                alert("Please fill in role name");        
+            }else{
+                $("#form-add-role").submit()
+            }   
+       })
+
+       
+    
+       
+        $(".btn-edit").click(function(){ 
+            
+            /*Editing subject js & */    
+           values = $(this).attr("id").split("-")
+ 
+            $("#edit-roleID").val(values[0])
+            $("#edit-role-name").val(values[1])
+            
+        })
+    
+        $(".btn-edit-role").click(function(){
+            /* submitting editing form */
+           $("#form-edit-div").submit()
+        })
+    
+    
+        $(".btn-del").click(function(){
+            /* Deleting form */
+            
+            values = $(this).attr("id").split("-")
+            $("#del-roleID").val(values[0])
+            $("#del-role-name").val(values[1])
+        })
+    
+        
+        $(".del-btn-submit").click(function(){
+            /* submitting deleting form */
+           $("#form-edit-div").submit()
+        })
+
+
+    /* role js */
+
+    
+    $(".btn-add-role").click(function(){
+            /* submitting editing form */
+            if(("#role-name").val()==""){
+                alert("Please fill in role name");        
+            }else{
+                $("#form-add-role").submit()
+            }   
+       })
+    
+    
+        $(".btn-edit-role").click(function(){ 
+            /*Editing subject js & */    
+           values = $(this).attr("id").split("-")
+            $("#edit-roleID").val(values[0])
+            $("#edit-role-name").val(values[1])
+        })
+    
+        $(".btn-edit-role-submit").click(function(){
+            /* submitting editing form */
+           $("#form-del-right").submit()
+        })
+    
+    
+        $(".btn-del-right").click(function(){
+            /* Deleting form */       
+            values = $(this).attr("id").split("-")
+            $("#del-rightID").val(values[0])
+            $("#del-right-name").val(values[1])
+        })
+    
+        
+        $(".del-btn-submit").click(function(){
+            /* submitting deleting form */
+           $("#form-del-right").submit()
+        })
+    
+</script>
+

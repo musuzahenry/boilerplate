@@ -1,0 +1,95 @@
+
+
+{% extends 'finance/index.html' %}
+{% load humanize %}
+
+
+{% block content %}
+
+{% include request.session.current_header %}
+
+<div class="row">
+    <div class="col-md-2 col-12">
+       <div class="collapse" id="filter-table" >
+        <form method="POST" action="{% url 'hr:employee-payments' %}">
+            {% csrf_token %}
+            <p style="margin-bottom: 0px; margin-top: 10px;" > 
+                <span  style="font-weight: bold; padding: 5px;">Filter By Date:</span>
+            </p>
+            <table>
+                <tr><td colspan="2">
+                    <label>Station</label>
+                    <select name="stationID-id">
+                        {% for station in all_stations %}
+                        <option value="{{station.id}}">{{station.station_name}}</option>
+                        {% endfor %} 
+                    </select>
+                </td></tr>
+            <tr>
+            <td>
+                <label>From</label>
+                <input type="date" name="date1" placeholder="Enter from date" required />
+            </td>
+            <td>
+                <label>To</label>
+                <input type="date" name="date2" placeholder="Enter to date" required />
+            </td>
+             <td > <button style="width:80px;" type="submit" class="btn btn-info btn-sm"><i class="fa fa-arrow-right"></i> &nbsp;Load</button></td>
+            </tr>
+            </table>
+            
+        </form>
+     </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+       <p style="margin-top: 5px;"> 
+        <span  class="btn btn-sm btn-info" data-bs-toggle="collapse" data-bs-target="#filter-table"
+        style="font-weight: bold; padding: 5px;"><i class="fa fa-filter"></i>&nbsp; Filter</span>
+        
+        <button class="export-to-excel-file btn btn-info btn-sm"><i class="fa fa-file"></i>&nbsp; Export To Excel</button></p>
+       <h4 class="page-title">EMPLOYEE PAYMENTS</h4>
+       <p style="text-align: center;"> From: <b>{{orig_date1}}</b> To: <b>{{orig_date2}}</b></p>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-12" >
+        <table class="table table-bordered table-striped " id="file-export"  >
+            <thead style="position:sticky; top:0; z-index: 1; background: rgb(24, 54, 94); color:white;">
+        
+                <tr>
+                    <td>Record Date</td>
+                    <td>Particulars</td>
+                    <td>Description</td>
+                    <td>Credit</td>
+                    <td>Recording User</td>
+                </tr>
+            </thead>
+        
+            <tbody>
+                {% for cashbook in object_list %}
+                <tr>
+                <td>{{cashbook.record_date}}</td>
+                <td>{{cashbook.particulars}}</td>
+                <td>{{cashbook.item_name}}</td>
+                <td>{{cashbook.expense_made | floatformat:0  | intcomma}}</td>
+                <td>{{cashbook.user_fullname}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        
+            <tfoot style="background: rgb(24, 54, 94); color:white;">
+                <tr>
+                    <td colspan="7"> count: {{count}}</td>
+                </tr>
+            </tfoot>
+        </table>
+        </div>
+</div>
+
+{% include request.session.current_footer %}
+{% endblock %}

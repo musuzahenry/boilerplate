@@ -1,7 +1,3 @@
-from django.shortcuts import render
-
-# Create your views here.
-
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from sysadmin.forms import RegistrationForm, LoginForm
@@ -22,7 +18,7 @@ class Index:
 
         sys_info = GLOBAL_DEFS.get_sys_info(request)
 
-        if request.method == "POST":
+        if request.method == "POST" and not request.user.is_authenticated:
             form = LoginForm(request.POST)
         
             if form.is_valid():
@@ -45,26 +41,19 @@ class Index:
                                                               current_employee.system_roleID.module_settings+":index"
                                                               )
                     #then redirect to that dashboard
-                    return redirect (current_employee.system_roleID.module_settings+":index")
+                    return redirect(current_employee.system_roleID.module_settings+":index")
                     
                 else:
                     messages.info(request, "Invalid username or password")
 
         else:
                 form = LoginForm()
-        
-
-        
+             
         #if user is already logged in, just redirect to the sys admin dahboard
         if request.user.is_authenticated:
           return redirect ("sysadmin:system-admin-dashboard")
-
-
             
         return render (request, template_name="sysadmin/index.html", context={"form":form, "sys_info":sys_info,})
-
-
-
 
 
 
@@ -73,16 +62,6 @@ class Index:
         logout(request)
         return redirect("sysadmin:index")
 
-
-
-
-    def system_admin_dashboard(request):
-
-
-        return render (
-                      request, 
-                      template_name="sysadmin/system_admin_dashboard.html", 
-                      context={})
 
 
 

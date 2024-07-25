@@ -4,19 +4,48 @@
 
 
 {% block content %}
-{% include 'hr/header.html' %}
+{% include request.session.current_header %}
 <div class="row">
 
   <div class="col-12">
+
+    <div class="row">
+       <div class="col-md-3 col-12">
+       <p style="margin: 4px;">
+        <button class="btn btn-info btn-sm" data-bs-target="#filter" data-bs-toggle="collapse"><i class="fa fa-filter"></i> &nbsp;Filter</button>
+        <a href="{% url 'hr:deleted-employees' %}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Deleted Employees</a>
+    </p>
+       
+    <div class="collapse" id="filter">
+       <form method="POST" action="{% url 'hr:employee-list' %}" >
+        {% csrf_token %}
+        <table><tr><td>
+        <label>Filter By Branch Name</label>
+        <select name="stationID-id">
+            <option value="{{stationID_id}}">{{station_name}}</option>
+            {% for station in all_stations %}
+            <option value="{{station.id}}">{{station.station_name}}</option>
+            {% endfor %} 
+        </select>
+        </td><td>
+        <button type="Submit" class="btn btn-info btn-sm">Load</button>
+        </td></tr></table>  
+        </form>
+        </div>
+       </div>
+    </div>
+
     <h3 class="page-title">EMPLOYEE LIST</h3>
     <button data-bs-target="#pay-all" data-bs-toggle="modal"
-       class="btn btn-info btn-sm inner-btn"><i class="fa fa-pencil"></i> Generate Pay Roll
+       class="btn btn-info btn-sm inner-btn"><i class="fa fa-pencil"></i> Pay For All Ticked
   </button>
 
-        <table class="table table-striped">
+        <table class="table table-striped table-bordered" >
         <thead>
             <tr class="bg-info text-white">
-                <td>Pay Roll</td>
+                <td></td>
+                <td>#</td>
+                <td>Branch</td>
                 <td>Employee NO:</td>
                 <td>Fullname</td>
                 <td>Position</td>
@@ -25,22 +54,104 @@
             </tr>
         </thead>
         <tbody>
+
+            <form method="POST" action="{% url 'hr:make-emp-payments' %}">
+                {% csrf_token %}
+
+        <tr style="height: 1px !important;">
+            <td colspan="8" >
+                
+                <div class="modal" id="pay-all">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <p class="modal-title" id="pay-one-name"><b>Pay For All</b></p>
+                            </div>
+                            <p style="text-align: right; width:100%; padding-right: 20px; margin: 0px; ">
+                                <i class="btn btn-sm btn-close btn-danger" data-bs-dismiss="modal" aria-label="Close" 
+                                  style="text-align: center; width:30px; height: 30px; background-color: red !important;">
+                                <span class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="width:100%;">
+                                </span>
+                            </i>
+                            </p>
+                        <div class="modal-body">
+            <div style="padding: 10px;">
+
+        <p style="text-align: center; ">
+            <b>Tick what you are paying for</b></p>
+          <input type="hidden" value="yes" name="pay-selected">
+          <input type="hidden" value="expense" name="item-type">
+          <input type="hidden" value="employee" name="person-type">
+          <input type="hidden" value="0" name="item-categoryID">
+            
+           <p style="text-align: center; background-color:rgb(235, 233, 233); padding-top: 10px; padding-bottom: 10px; margin-bottom: -10px;">
+            <label class="check-label" >
+                <input type="checkbox" class="salary-nssf-paye" name="net-salary" value="yes" /><br/>
+                SALARY</label>
+       
+    
+                <label class="check-label"> 
+                    <input type="checkbox" class="salary-nssf-paye" name="nssf" value="yes" />NSSF
+                    </label>
+
+                <label class="check-label"><input type="checkbox" class="salary-nssf-paye" name="paye" value="yes" />PAYE
+                    </label>
+            </p>
+      
+            <br/>
+            <label style="background-color: gray; width:100%;">Percentage Payment(%100)</label><br/>
+            <input style="width:100%;" type="number"  value="100" name="percentage-pay"/><br/>
+
+                <p style="margin-top: 10px;"><b>OR (Make Other Payment)</b> &nbsp;</p>
+     
+                <label style="background-color: gray; width:100%;">Pay Description</label><br/>
+                <input type="text" style="width:100%;" class="custom-pay" name="custom-employee-payment" placeholder="Payment For"><br/>
+                <label style="background-color: gray; width:100%;">Amount</label><br/>
+                <input  type="number" style="width:100%; margin-bottom: 4px;" class="custom-pay" name="custom-payment"><br/>
+
+                <label style="background-color: gray; width:100%;">Money Source</label>
+                <select name="pay-method" style="width:100% !important; height: 30px;">
+                    {% for paymehtod in pay_methods %}
+                    <option value="{{paymehtod.settings_name}}">{{paymehtod.pay_method_name}}</option>
+                    {% endfor %}
+                </select>
+                <label style="background-color: gray; width:100%;">Payment Identification</label>
+                <input style="width:100% !important; height: 30px;" 
+                type="text" name="payID-NO" placeholder="mobile money no / check no / slip no / etc">
+
+                <button style="margin-top: 4px;;"
+                class="btn btn-sm  btn-primary inner-btn"><i class="fa fa-plus"></i> &nbsp;Pay Now</button>
+
+           </div> </div></div></div></div>
+           </td>
+           </tr>
         {% for employee in object_list %}
         <tr>
-            <td><a href="{% url 'hr:update-employee' pk=employee.pk %}">
-            <span style="border-right:1px solid black; border-radius: 4px; padding: 3px; "><i class="fa fa-plus"></i> Pay </span></a> </td>
+
+        
+            <td><input type="checkbox" name="{{employee.pk}}-checked" value="{{employee.pk}}-checked" checked></td>
+            <td >
+            <span class="btn btn-info pay-emp" data-bs-target="#pay-one" data-bs-toggle="modal"
+            id="{{employee.id}}-{{employee.fullname}}"
+            style="border-right:1px solid black; border-radius: 4px; padding: 3px; ">
+            <i class="fa fa-plus"></i> Pay </span>
+            
+
+        </td>
+        <td><a href="{% url 'hr:update-employee' pk=employee.pk %}">{{employee.stationID}}</a> </td>
         <td><a href="{% url 'hr:update-employee' pk=employee.pk %}">{{employee.emp_no}}</a> </td>
-        <td><a href="{% url 'hr:update-employee' pk=employee.pk %}">{{employee.surname}} {{employee.firstname}} {{employee.othernames}}</a></td>
+        <td><a href="{% url 'hr:update-employee' pk=employee.pk %}">{{employee.fullname}}</a></td>
         <td><a href="{% url 'hr:update-employee' pk=employee.pk %}">{{employee.positionID.position_name}} </a></td>
         <td><a href="{% url 'hr:update-employee' pk=employee.pk %}">{{employee.address}} </a></td>
-        <td><a href="{% url 'hr:update-employee' pk=employee.pk %}">{{employee.phone_contacts}} </a>
+        <td><a href="{% url 'hr:update-employee' pk=employee.pk %}">{{employee.phone_contacts|default:""}} </a>
         </td>
         </tr>
         {% endfor %}
+        </form>
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="6">Count: {{count}}</td>
+                <td colspan="8">Count: {{count}}</td>
             </tr>
         </tfoot>
         </table>
@@ -52,62 +163,105 @@
 
 
 
-<div class="row">
+
+<div class="modal" id="pay-one">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <p class="modal-title" id="pay-one-name"><b>Pay For One</b></p>
+        </div>
+        <p style="text-align: right; width:100%; padding-right: 20px; margin: 0px; ">
+            <i class="btn btn-sm btn-close btn-danger" data-bs-dismiss="modal" aria-label="Close" 
+              style="text-align: center; width:30px; height: 30px; background-color: red !important;">
+        </i>
+        </p>
+
+    <div class="modal-body">
+    <form method="POST" action="{% url 'hr:make-emp-payments' %}">
+        {% csrf_token %}
+
     
-    <div class="modal" id="pay-all">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Pay For All</h3>
+    <table class="table table-striped">
+      <input type="hidden" value="yes" name="pay-for-one">
+      <input  type="hidden"  id="personID" name="personID" value="{{employee.id}}">
+      <input type="hidden" value="expense" name="item-type">
+      <input type="hidden" value="employee" name="person-type">
+
+      <input  type="text"  id="fullname" name="fullname" 
+      style="text-align: center; border: 0px; font-weight: bold; margin-top: -10px; text-wrap:wrap;">
+    <tr >
+        <td colspan="5" style="text-align: center;">
+            <b>Tick One</b><br/>
+        <label class="check-label" >
+            <input type="checkbox" class="salary-nssf-paye" name="net-salary" value="yes" /><br/>
+            SALARY</label>
+   
+           
+            <label class="check-label"> 
+                <input type="checkbox" class="salary-nssf-paye" name="nssf" value="yes" />NSSF
+                </label>
+
+            <label class="check-label"><input type="checkbox" class="salary-nssf-paye" name="paye" value="yes" />PAYE
+                </label>  
+        </td>  
+    </tr>
+    
+    <tr><td colspan="5">
+        <label style="background-color: gray; width:100%;">Percentage Payment(%100)</label>
+        <input style="width:100%;" type="number"  value="100" name="percentage-pay"/>
+    </td>
+
+    <tr>     
+
+        <td colspan="5">
+            <p data-bs-target="#custom-pay" data-bs-toggle="collapse">
+            <b>OR</b> &nbsp;<span style="border:1px solid black;"
+            class="btn btn-sm"><i class="fa fa-angle-down"></i> Make Custom Payment</span></p>
+            <div class="collapse" id="custom-pay">
+            <label style="background-color: gray; width:100%;">Custom Payment Name</label>
+            <input type="text" style="width:100% !important; height: 30px;" type="text" name="custom-employee-payment" placeholder="Payment For">
+            <label style="background-color: gray; width:100%;">Amount</label>
+            <input style="width:100% !important; height: 30px;" type="number" name="custom-payment">
             </div>
-            <p style="text-align: right; width:100%; padding-right: 20px; margin: 0px; ">
-                <i class="btn btn-sm btn-close btn-danger" data-bs-dismiss="modal" aria-label="Close" 
-                  style="text-align: center; width:30px; height: 30px; background-color: red !important;">
-                <span class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="width:100%;">
-                </span>
-            </i>
-            </p>
 
-        <div class="modal-body">
-        <form>
-            {% csrf_token %}
-        <P style="margin: 0px; text-align: center;"><b>PAY ALL</b></span></P>
-        <table class="table table-striped">
-          <input type="hidden" value="yes" name="pay-all">
-        <tr>
-            <td><b>SALARY</b></td>
-            <td><input type="radio" id="html" name="salary" value="HTML" checked /></td><td>Yes</td>
-            <td><input type="radio" id="css" name="salary" value="CSS" /></td> <td> No </td>       
-        </tr>
-         <tr>
-            <td><b>NSSF</b></td>
-            <td><input type="radio" id="css" name="nssf" value="yes" checked /></td> <td>Yes</td>
-            <td><input type="radio" id="html" name="nssf" value="no" /></td><td>No</td>
-        </tr>
 
-         <tr>
-            <td ><b>PAYE</b></td>
-            <td><input type="radio" id="css" name="paye" value="yes" checked/></td> <td>Yes</td>
-            <td><input type="radio" id="html" name="paye" value="no" /></td><td>No</td>
-        </tr>
-        <tr><td colspan="5">
-            <label style="background-color: gray; width:100%;">Percentage Payment(%100)</label>
-            <input style="width:100%;" type="number"  value="100" name="percentage-pay"/>
-        </td></tr>
-        </table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="5">
+            <label style="background-color: gray; width:100%;">Money Source</label>
+            <select name="pay-method" style="width:100% !important; height: 30px;">
+                {% for paymehtod in pay_methods %}
+                <option value="{{paymehtod.settings_name}}">{{paymehtod.pay_method_name}}</option>
+                {% endfor %}
+            </select>
 
-        <button class="btn btn-sm  btn-info inner-btn"><i class="fa fa-plus"></i> &nbsp;Pay Now</button>
+            <label style="background-color: gray; width:100%;">Payment Identification</label>
+            <input style="width:100% !important; height: 30px;" 
+            type="text" name="payID-NO" placeholder="mobile money no / check no / slip no / etc">
 
- 
+        </td>
+    </tr>
 
-        </form>
-    </div>
-    </div>
+    </tr>
+    </table>
+    <button class="btn btn-sm  btn-info inner-btn"><i class="fa fa-plus"></i> &nbsp;Pay Now</button>
+    </form>
+</div>
 </div>
 </div>
 </div>
 
+</div>
 
-{% include 'hr/footer.html' %}
-{% endblock%}
+
+
+
+
+{% include request.session.current_footer %}
+
+
+
+
+{% endblock %}
 

@@ -11,7 +11,6 @@ class Index:
     def index_views(request):
 
 
-
         return render(
                       request,
                       template_name = "finance/index.html"

@@ -1,0 +1,7 @@
+1. Administrator
+2. Finance
+4. FrontDEsk
+5. HR
+6. Procureemt
+6. Stores #Stock Management done here
+7. SystemAdmin

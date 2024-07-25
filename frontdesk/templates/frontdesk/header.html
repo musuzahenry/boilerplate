@@ -1,1 +1,20 @@
-<h2>Header specific to Front Desk</h2>
+
+
+
+<div class="row">
+    <div class="col-12">
+        <p style="margin-top: 5px; margin-bottom: 5px;">
+            <a href="{% url 'frontdesk:add-client' %} " class="btn btn-sm btn-primary btn-sm"><i class="fa fa-plus"></i> New Client</a>
+            <a href="{% url 'frontdesk:list-clients' %} " class="btn btn-sm btn-primary btn-sm"><i class="fa fa-users"></i> Client List</a>
+            <a href="{% url 'frontdesk:list-clients' %} " class="btn btn-sm btn-primary btn-sm"><i class="fa fa-users"></i> Loan List</a>
+            <a href="{% url 'frontdesk:list-clients' %} " class="btn btn-sm btn-primary btn-sm"><i class="fa fa-users"></i> Loan Payments</a>
+            <a href="{% url 'frontdesk:list-clients' %} " class="btn btn-sm btn-primary btn-sm"><i class="fa fa-users"></i> Loan Defaulters</a>
+            <a href="{% url 'frontdesk:list-clients' %} " class="btn btn-sm btn-primary btn-sm"><i class="fa fa-users"></i> Fines Added</a>
+            <a href="{% url 'frontdesk:list-clients' %} " class="btn btn-sm btn-dark btn-sm"><i class="fa fa-users"></i> Savings Accounts</a>
+            <a href="{% url 'frontdesk:list-clients' %} " class="btn btn-sm btn-dark btn-sm"><i class="fa fa-users"></i> Saving Deposits</a>
+
+        <a class="btn btn-sm btn-primary" href="{% url 'finance:list-cashbook' %}"><i class="fa fa-list"></i> CashBook</a>
+        </p>
+
+    </div>
+</div>

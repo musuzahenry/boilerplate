@@ -1,0 +1,24 @@
+{% extends 'hr/index.html' %}
+
+{% block content %}
+
+{% include request.session.current_header %}
+
+
+{% for next_of_kin in object_list %}
+
+<h1>{{next_of_kin.next_of_kin_full_name}}</h1>
+
+{% endfor %}
+
+next_of_kin_full_name =models.CharField(max_length=80, blank=True, null=True) 
+next_of_kin_contacts =models.CharField(max_length=50, blank=True, null=True) 
+next_of_kin_address =models.CharField(max_length=80, blank=True, null=True)
+next_of_kin_relation =  models.CharField(max_length=80, blank=True, null=True)  
+next_of_kin_image = models.ImageField(null=True, blank=True, upload_to = "NEXTOFKIN/"+YEAR+"/"+MONTH+"/"+DAY)
+
+
+{% include request.session.current_footer %}
+
+
+{% endblock %}

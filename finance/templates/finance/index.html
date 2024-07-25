@@ -12,7 +12,9 @@ Store templates will inherit this file
     {% for message in messages %}
     <p style="background: white;" class="bg-danger">{{message}}</p>
     {% endfor %}
-    </div>
+</div>
+
+
 
     {% block content %}
         {% include request.session.current_header %}
@@ -23,7 +25,7 @@ Store templates will inherit this file
         {% include request.session.current_footer %}
     {% endblock %}
 
-</div>
+
 
 
 

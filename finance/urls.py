@@ -6,5 +6,5 @@ from  finance . views import *
 urlpatterns =[
     #user view urls
     path("", Index.index_views, name="index"),
-    #path("register-client", FrontDesk.frontdesk_dashboard, name="frontdesk-dashboard"),
+    path("list-cashbook", CashbookViews.list_cashbook, name="list-cashbook"),
 ]

@@ -1,0 +1,50 @@
+{% extends 'hr/index.html' %}
+
+{% block content %}
+
+{% include request.session.current_header %}
+
+<div class="row">
+    <div class="col-12">
+        <p style="text-align: left;"><a class="btn btn-sm btn-dark" href="{% url 'frontdesk:client-update' kin.clientID.id %}">
+        <i class="fa fa-arrow-left"></i>&nbsp; Back To Client</a></p>
+        <h4 class="page-title">Update Next Of Kin</h4>
+        <p style="text-align: center;"><b>Next Of Kin for {{clientID.fullname}}</b></p>
+    </div>
+    <div class="col-md-4">      
+        <p style="text-align: center;">
+            <img style="width:200px; height: 200px;" 
+            {% if kin.next_of_kin_image %}
+            src="{{kin.next_of_kin_image.url}}"
+            {% endif %}
+            src="" Alt="Next Of Kin Img"
+            ><br/>
+            <span>{{kin.next_of_kin_full_name}}</span>
+        </p>
+    </div>
+<div class="col-md-4">
+    <form method="POST" action="{% url 'frontdesk:update-client-kin' kin.id%}"  enctype="multipart/form-data">
+        {% csrf_token %}
+        <label>Full Name</label>
+        <input type="text" name="next_of_kin_full_name" value="{{kin.next_of_kin_full_name}}" />
+        <label>Relation</label>
+        <input type="text" name="next_of_kin_relation" value="{{kin.next_of_kin_relation}}" />
+        <label>Contactsc(Comma Separated)</label>
+        <input type="text" name="next_of_kin_contacts" value="{{kin.next_of_kin_contacts}}" />
+        <label>Load Image</label>
+         <input type="file" name="next_of_kin_image" />
+        <button style="margin-top: 4px;" type="submit" class="btn btn-info btn-sm">
+            <i class="fa fa-save"></i>&nbsp; Submit</button>
+    </form>
+</div>
+
+<div class="col-12">
+    <p style="text-align: left;"><a class="btn btn-sm btn-dark" href="{% url 'frontdesk:client-update' kin.clientID.id %}">
+        <i class="fa fa-arrow-left"></i>&nbsp; Back To Client</a></p>
+</div>
+
+</div>
+
+{% include request.session.current_footer %}
+
+{% endblock %}

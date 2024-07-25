@@ -1,0 +1,171 @@
+{% extends "sysadmin/index.html" %}
+
+{% load static %}
+
+
+{% block content %}
+
+{% include request.session.current_header %}
+
+
+    <div class="row">
+
+      <div class="col-12">
+        <h4 class="page-title" >
+            System Role: {{current_role}}</h4>
+        </div>
+
+        <div class="col-12">
+            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#add-right-div">
+                <i class="fa fa-plus"></i> Add Right</button>
+            </div>  
+
+    <div class="col-12 col-md-8" >
+        
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr><td>#</td><td>Role Name</td>
+                                       
+                </tr>
+            </thead>
+            <tbody>
+                {% for role_right in rights_list %}
+                <tr>
+                    <td> 
+                        <span style="cursor: pointer;" class="btn-del-right" 
+                        id="{{role_right.id}}-{{role_right}}" data-bs-toggle="modal" data-bs-target="#delete-right-div">
+                        &#128465; Delete
+                        </span>
+                    </td>
+                    <td>{{role_right}}</td>
+
+                        </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+         
+    </div>
+
+
+    
+
+
+    <div class="col-12">
+
+        <div id="add-right-div" class="modal">
+            <div id="add-right-div" class="modal-dialog">
+            <div class="modal-content row">
+                <form  
+                method="POST" action="{% url 'sysadmin:list-role-rights' current_role.id %}" id="form-add-role">
+                <div class="modal-header col-11" style="height: 60px !important; 
+                margin-bottom:-20px;">
+                    <p>Add Rights</p>
+                    &nbsp;&nbsp;  <p style="text-align: right;">
+                    <i class="fa  btn btn-sm btn-danger" data-bs-dismiss="modal" 
+                    style="cursor: pointer;">X Close</i>
+                    </p>
+                </div>
+                <div class="modal-body" style="overflow: scroll; height: 200px; padding-top: 30px; ">   
+                        {% csrf_token %}
+
+                        <input type="hidden" name="add-role-rights" value="0">
+
+                    <table class="table table-striped table-bordered">
+                        <thead><tr><td colspan="2" style="text-align: center;"><b>Tick & Add</b></td></tr></thead>
+                        {% for right in un_used_rights_list %}
+                        <tr style="padding:0px; margin: 0px; width:350px;">
+                        <td>
+                        <input type="checkbox" name="{{right.settings_name}}" value="{{right.id}}">
+                        </td>
+                        <td>
+                        {{right.right_name}} 
+                        </td>
+                        </tr>
+
+                        {% endfor %}
+                    </table>
+                </div>
+                <p>
+                    <button class="btn btn-info btn-sm">
+                        <i class="fa fa-plus"></i> Add</button>
+                </p>
+                
+            </form>
+
+            </div>
+          </div>
+        </div>
+       
+        <div class="modal" id="edit-role-div">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p>Edit Role Name</p>
+                        <p style="text-align: right;">
+                        <i class="fa fa-times" data-bs-dismiss="modal" 
+                        style="padding:10px; cursor: pointer; background-color:rgb(200,200,200); border-radius: 5px;"></i>
+                        </p>
+                        </div>
+                    <div class="modal-body">
+                      <form method="POST" action="{% url 'sysadmin:list-role-rights' current_role.id %}" id="form-del-right">
+                        {% csrf_token %}
+                        <div style="margin-bottom: 5px;">
+                        <label style="width:100%;">Role Name</label>
+                        <input id="edit-roleID" name="edit-roleID" type="hidden" />
+                        <input style="width:100%;" id="edit-role-name" type="text" name="edit-role-name" i>
+                        </div>
+                        <button class="btn btn-primary btn-sm btn-edit-role-submit">Save</button>
+                        <button class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
+                    </form>
+                    
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        
+        <div class="modal" id="delete-right-div">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="margin-bottom: -45px;">
+                        <p>Delete Role</p>
+                        <p style="text-align: right;">
+                        <i class="fa fa-times" data-bs-dismiss="modal" 
+                        style="padding:10px; cursor: pointer; background-color:rgb(200,200,200); border-radius: 5px;"></i>
+                        </p>
+                        </div>
+                    <div class="modal-body">
+                      <form method="POST" action="{% url 'sysadmin:list-role-rights' current_role.id %}" id="form-del-right">
+                        {% csrf_token %}
+                        <div style="margin-bottom: 5px;">
+                        <label style="width:100%; margin-bottom: -5px;">Delete Role</label>
+                        <input id="del-rightID" name="del-rightID" type="hidden" />
+                        <input style="width:100%;" type="text" name="del-right-name" id="del-right-name">
+                        </div>
+                        <button class="btn btn-danger btn-sm del-btn-submit">Delete</button>
+                        
+                    </form>
+                    <p style="text-align: right;">
+                    <button style="margin-top: -60px;"class="btn btn-primary btn-sm" data-bs-dismiss="modal">Close</button>
+                    </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+</form>
+
+</div>
+
+
+{% include request.session.current_footer %}
+
+{% endblock %}

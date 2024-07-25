@@ -3,19 +3,55 @@
 {% load humanize %}
 
 
+
+
     <div class="row">
        
         {% block content %}
 
         {% include request.session.current_header %}
-            
- 
-        <div class="col-12 col-md-4">
-            <h4>
-                {{user_employee.surname}} {{user_employee.firstname}} {{user_employee.othernames}}
-            </h4>
 
-              <p class="bg-info text-white">
+        <div class="col-12">
+           <h4 class="page-title">{{user_employee.fullname}}</h4>
+        </div>
+    </div>
+    
+        <div class="row">
+    
+        <div class="col-12 col-md-4">
+
+            <h4>{% if current_user %} Edit {% else %} Add {% endif %} user credentials</h4>
+
+            <form action="{% url 'sysadmin:system-admin-dashboard' %}" method="POST">
+                {% csrf_token %}
+
+                <input type="hidden" name="add-new-user" value="0">
+
+
+                <label style="width:100%;" class="bg-info  text-white">User Name</label>
+                <input style="width:100%;" type="text" name="add-username" value="{{user_employee.userID.username}}"
+                placeholder="Username"  />
+
+                <label style="width:100%;" class="bg-info text-white"> passw</label>
+                <input style="width:100%;" type="password" name="passw" required placeholder="Password"> 
+
+                <label style="width:100%;" class="bg-info  text-white">Confirm password</label>
+                <input style="width:100%;" type="password" name="confirm-passw" required>
+                 <p>
+                <button style="margin-top: 4px;" class="btn btn-sm btn-info"><i class="fa fa-plus"></i> Save</button>
+                </p>
+            </form>
+          
+        </div>
+
+
+
+
+        <div class="col-12 col-md-4">
+
+            <h4>{% if user_employee.is_system_user %} User Status {% else %} Activate User {% endif %} </h4>
+
+               <p class="bg-info text-white">
               Is employee going to use the system?
               </p>
               <form method="POST">
@@ -40,38 +76,9 @@
                   {% endfor %}
                 </select>
               
-              <button class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Save</button>  
+              <button style="margin-top: 4px;" class="btn btn-sm btn-info"><i class="fa fa-plus"></i> Save</button>  
               </form><br/>
 
-        </div>
-
-
-        
-
-
-        <div class="col-12 col-md-4">
-
-            <h4>{% if current_user %} Edit {% else %} Add {% endif %} user credentials</h4>
-
-            <form action="'system-admin-dashboard'" method="POST">
-                {% csrf_token %}
-
-                <input type="hidden" name="add-new-user" value="0">
-
-
-                <label style="width:100%;" class="bg-info  text-white">User Name</label>
-                <input style="width:100%;" type="text" name="add-username" value="{{user_employee.userID.username}}" />
-
-                <label style="width:100%;" class="bg-info text-white"> Password</label>
-                <input style="width:100%;" type="password" name="password" required> 
-
-                <label style="width:100%;" class="bg-info  text-white">Confirm Password</label>
-                <input style="width:100%;" type="password" name="confirm-password" required>
-                 <p>
-                <button class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Save</button>
-                </p>
-            </form>
-          
         </div>
 
 
@@ -92,7 +99,7 @@
                     <td>{{user_employee.userID}}</td>
                 </tr>
                 <tr>
-                    <td>Password</td>
+                    <td>passw</td>
                     <td>xxxx</td>
                 </tr>
                 <tr>

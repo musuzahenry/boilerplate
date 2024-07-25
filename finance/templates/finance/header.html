@@ -1,1 +1,11 @@
-<h2>Header specific to Finance</h2>
+
+<div class="row">
+    <div class="col-12">
+        <p style="margin-top: 5px; margin-bottom: 5px;">
+        <a class="btn btn-sm btn-primary" href="{% url 'finance:list-cashbook' %}"><i class="fa fa-list"></i> CashBook</a>
+        <a href="{% url 'hr:employee-list' %} " class="btn btn-sm btn-primary btn-sm"><i class="fa fa-users"></i> Employee List</a>
+        <a href="{% url 'hr:employee-payments' %} " class="btn btn-sm btn-primary btn-sm"><i class="fa fa-dollar"></i> Employee Payments</a>
+        </p>
+
+    </div>
+</div>

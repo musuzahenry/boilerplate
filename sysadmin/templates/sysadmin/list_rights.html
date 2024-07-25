@@ -1,0 +1,43 @@
+{% extends "sysadmin/index.html" %}
+
+{% load static %}
+
+
+{% block content %}
+
+{% include request.session.current_header %}
+
+
+<div class="row">
+    <div class="col-12">
+         <h4 class="page-title"> System Rights </h4>
+    </div>
+</div>
+
+  <div class="row">
+    <div class="col-12">
+
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <td>Right</td>  <td>Description</td>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for right in rights_list%}
+                <tr>
+                <td>{{right.right_name}}</td>  <td>{{right.description}}</td>
+                </tr>
+               {% endfor %}
+            </tbody>
+
+
+        </table>
+    </div>
+  </div>
+
+
+  {% include request.session.current_footer %}
+
+{% endblock %}

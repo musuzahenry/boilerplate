@@ -1,0 +1,111 @@
+
+
+{% extends 'finance/index.html' %}
+{% load humanize %}
+
+
+{% block content %}
+
+{% include request.session.current_header %}
+
+<div class="row">
+    <div class="col-md-3 col-12">
+        <div  class="collapse" id="filter-table">
+            <form method="POST" action="{% url 'finance:list-cashbook' %}">
+                {% csrf_token %}
+                <table>
+                <tr><td colspan="2">
+                    <label>Station</label>
+                    <select name="stationID-id">
+                        {% for station in all_stations %}
+                        <option value="{{station.id}}">{{station.station_name}}</option>
+                        {% endfor %} 
+                    </select>
+                </td></tr>
+                <tr>
+                <td>
+                    <label>From</label>
+                    <input type="date" name="date1" placeholder="Enter from date" required />
+                </td>
+                <td>
+                    <label>To</label>
+                    <input type="date" name="date2" placeholder="Enter to date" required />
+                </td>
+                 <td > <button style="width:80px;" type="submit" class="btn btn-info btn-sm"><i class="fa fa-arrow-right"></i> &nbsp;Load</button></td>
+                </tr>
+                </table>
+        
+            </form>
+        </div>
+        
+        <table style="margin-top: 5px;">
+            <tr>
+                <td >
+            <button class="btn btn-sm btn-info" data-bs-toggle="collapse" data-bs-target="#filter-table"
+            style="font-weight: bold; padding: 5px;"><i class="fa fa-filter"></i>&nbsp; Filter</button>
+            </td>
+            <td >      
+             <button class="export-to-excel btn btn-info btn-sm"><i class="fa fa-file"></i>&nbsp; Export To Excel</button>
+            </td></tr>
+            </table>
+        
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">       
+        <h4 class="page-title">CASHBOOK</h4>
+       <p style="text-align: center;"> From: <b>{{orig_date1}}</b> To: <b>{{orig_date2}}</b></p>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-12" >
+        <table class="table table-bordered table-striped " id="cashbook"  >
+            <thead style="position:sticky; top:0; z-index: 1; background: rgb(24, 54, 94); color:white;">
+        
+                <tr>
+                    <td>Branch</td>
+                    <td>Record Date</td>
+                    <td>Particulars</td>
+                    <td>Description</td>
+                    <td>Debit</td>
+                    <td>Credit</td>
+                    <td>Balance</td>
+                    <td>Recording User</td>
+                </tr>
+            </thead>
+        
+            <tbody>
+                <tr><td colspan="8" style="text-align: left; font-size: 20px; color:red;">
+                    Opening Balance: <i><b>{{opening_balance_set}} {{opening_balance}}</b></i></td>
+                </tr>
+                {% for cashbook in object_list %}
+                <tr>
+                <td>{{cashbook.stationID}}</td>
+                <td>{{cashbook.record_date}}</td>
+                <td>{{cashbook.particulars}}</td>
+                <td>{{cashbook.item_name}}</td>
+                <td>{{cashbook.income_received | floatformat:0  | intcomma}}</td>
+                <td>{{cashbook.expense_made | floatformat:0  | intcomma}}</td>
+                <td>{{cashbook.running_total_str}}</td>
+                <td>{{cashbook.user_fullname}}</td>
+                </tr>
+                {% endfor %}
+                <tr><td colspan="7" style="text-align: left; font-size: 20px; color:red; ">
+                    Closing Balance: <i><b>{{closing_balance_set}} {{closing_balance}}</b></i></td>
+                </tr>
+            </tbody>
+        
+            <tfoot style="background: rgb(24, 54, 94); color:white;">
+                <tr>
+                    <td colspan="8"> count: {{count}}</td>
+                </tr>
+            </tfoot>
+        </table>
+        </div>
+</div>
+
+
+{% endblock %}

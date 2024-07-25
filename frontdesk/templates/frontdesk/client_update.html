@@ -1,0 +1,159 @@
+{% extends 'hr/index.html' %}
+
+{% block content %}
+
+{% include request.session.current_header %}
+
+<div class="row">
+    <div class="modal" id="delete">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title" id="pay-one-name"><b>Are you sure wou want to delete?</b></p>
+                </div>
+                <div class="modal-body">
+                <table><tr>
+                    <td><button class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancel</button></td> 
+                    <td><a href="{% url 'frontdesk:delete-client' client.id %}" class="btn btn-success btn-sm">Yes, delete</a></td>                   
+                 </tr></table>  
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+
+    <div class="col-12">
+        <h4 class="page-title">EDIT CLIENT</h4>
+<table>
+<tr><td>
+ <a style="margin: 0px;"  href="{% url 'frontdesk:client-details'  client.pk %}" class="btn btn-sm btn-info inner-btn">
+    <i class="fa fa-list"></i> Client Details</button>  </a> 
+</td>
+<td>
+   <button style="margin: 0px;" data-bs-toggle="modal" data-bs-target="#delete"
+   type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>&nbsp; Delete Client</button>
+</td></tr>
+</table>
+
+<p style="margin-bottom: 4px;">Client No: <b>{{client.client_NO}}</b> Fullname: 
+    <b>{{client.fullname}}</b> </p>
+</div>
+</div>
+
+
+
+    <form method="POST" class="col-md-8 col-12" action=""  enctype="multipart/form-data" action="{% url 'frontdesk:client-update' client.id %}">
+        {% csrf_token %}
+        <div class="row">
+    <div class="col-md-6">
+        <p><b>CLIENT IMAGE</b></p>
+        <label>Upload Employee image</label>
+        {{form.client_image}}
+
+
+        <label>Surname</label>
+        {{form.surname}}
+        <label>First name</label>
+        {{form.firstname}} 
+        <label>Other names</label>
+        {{form.othernames}} 
+        
+    </div>
+    <div class="col-12 col-md-6">
+
+        <label>Gender</label>
+        {{form.gender}}
+        <label>Date of Birth</label>
+        {{form.date_of_birth}}
+        <label>Marital Status</label>
+        {{form.marital_status}}
+        <label>NIN</label>
+        {{form.NIN}}       
+        <p style="margin: 2px;"><span class="btn" style="border:1px solid black; margin-top: 15px;" data-bs-toggle="collapse" 
+            data-bs-target="#contacts">CONTACTS & ADDRESS <i class="fa fa-arrow-down bg-danger text-white"></i></span></p>
+        <div class="collapse" id="contacts">
+        
+        <label>Contacts</label>
+        {{form.contacts}}
+        <label>Email Address</label>
+        {{form.email_address}}
+        <label>Address</label>
+        {{form.address}}
+        <label>Cell</label>
+        {{form.cell}}
+        <label>Village</label>
+        {{form.village}}
+        <label>Parish</label>
+        {{form.parish}}  
+        <label>Ward</label>    
+        {{form.ward}}
+        <label>Subcounty</label>    
+        {{form.subcounty}}
+        <label>Division</label>     
+        {{form.division}}
+        <label>County</label>    
+        {{form.county}}
+        <label>Municipality</label>    
+        {{form.municipality}}
+        <label>District</label>    
+        {{form.district}}  
+        </div>   
+
+              <p><span class="btn" style="border:1px solid black; " data-bs-toggle="collapse" 
+                data-bs-target="#banking">OCCUPATION & BANKING <i class="fa fa-arrow-down bg-danger text-white"></i></span></p>
+            <div class="collapse" id="banking">
+            <label>occupation</label>
+            {{form.occupation}}
+            <label>Business</label>
+            {{form.business_name}}
+            <label>Employer</label>
+            {{form.employer}}
+            <label>Employer Address</label>
+            {{form.employer_address}}
+   
+            <label>Bank Name</label>
+            {{form.bank_name}}
+            <label>Branch</label>
+            {{form.branch}}
+            <label>Account No</label>
+            {{form.accountNo}}
+             </div>
+            <div style="margin-top: 20px;">     
+                <button class="btn btn-success" type="submit"><i class="fa fa-pencil"></i> Save</button>
+             </div>
+
+          </div>  
+        
+        </div>
+
+        </form>
+
+
+              
+        <div class="col-md-4 col-12">
+            <a class="btn btn-info" href="{% url 'frontdesk:create-next-of-kin' client.pk %}"><i class="fa fa-plus"></i>&nbsp; Add Next Of Kin</a>
+
+            <p><b>NEXT OF KINS</b></p>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr><td>#</td><td>Null Name</td><td>Contacts</td></tr>
+                </thead>
+                <tbody>
+                    {% for kin in next_of_kins %}
+                    <tr>
+                        <td><a style="font-size: 11px;" class="btn btn-info btn-sm" href="{% url 'frontdesk:update-client-kin'  kin.id %}"><i class="fa fa-pencil"></i>&nbsp; Edit</a></td>
+                        <td><a href="{% url 'frontdesk:update-client-kin'  kin.id %}">{{kin.next_of_kin_full_name}}</a></td>
+                        <td><a href="{% url 'frontdesk:update-client-kin'  kin.id %}">{{kin.next_of_kin_contacts}}</a></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+
+{% include request.session.current_footer %}
+
+{% endblock %}

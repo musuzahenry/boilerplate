@@ -23,6 +23,7 @@
 
 
             {% if request.user.is_authenticated %}
+            
             <div class="bg-dark text-white row" style="">
             <div class="col-12 col-md-4"></div>
             <div class="col-12 col-md-4" style="text-align: center; ">
@@ -31,7 +32,7 @@
                 <span><i style="border:0px;"class="fa fa-gear fa-spin"></i> DASHBOARDS</span>
                   <select  name="dashboard-redirect" style="height: 35px; border-radius: 4px;" 
                   onchange="this.form.submit()" style="height: 30px;">
-                    <option value="NA">{{request.session.dashboard}}</option>              
+                    <option value="NA">{{request.session.dashboard_ui_name}}</option>              
                     <option value="frontdesk:index">Frontdesk</option>
                     <option value="finance:index">Finance</option>
                     <option value="procurement:index">Procurement</option>

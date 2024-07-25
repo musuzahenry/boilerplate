@@ -109,7 +109,8 @@ class SystemSetings(models.Model):
   
 
 
-
+class SystemGeneralSettings(models.Model):
+  pass
   
 class SystemRoles(models.Model):    
     businessID = models.ForeignKey(Business, on_delete = models.CASCADE, null=True, blank=True)
@@ -182,6 +183,7 @@ class Employee(models.Model):
     firstname = models.CharField(max_length = 80, default="")
     surname = models.CharField(max_length=80, default="")
     othername = models.CharField(max_length=80, default="", null=True, blank=True)
+    fullname =  models.CharField(max_length=120, default="", null=True, blank=True)
     initials = models.CharField(max_length=50, null=True, blank=True, default="")
     employee_image = models.ImageField(null=True, blank=True, upload_to=upload_to_function)
     gender = models.CharField(max_length=7, choices = GENDER_CHOICES)
@@ -216,13 +218,21 @@ class Employee(models.Model):
     next_of_kin2_names = models.CharField(max_length=50, null=True, blank=True, default="")
     next_of_kin2_contacts = models.CharField(max_length=50, null=True, blank=True, default="")
     next_of_kin2_address = models.CharField(max_length=40, null=True, blank=True, default="")
+
+    class Meta:
+       indexes = [ 
+         models.Index(fields=["is_system_user",]),
+         models.Index(fields=["NIN",]),
+         models.Index(fields=["NSSF_NO",]),
+         models.Index(fields=["deleted",]),
+       ]
     
     def __str__(self):
       return str(self.surname)+" "+ str(self.firstname)+" "+ str(self.othername)
     
     def save(self, *args,**kwargs): 
-        self.initials = str(self.surname)[0] or "" +str(self.firstname)[0] or ""+ str(self.othername)[0] or ""
-        super(Employee, self).save(*args, **kwargs)
+        self.initials = str(self.surname)[0] or "" +str(self.firstname)[0] or ""+ str(self.othername)[0] or ""       
+        self.fullname = str(self.surname)+" "+ str(self.firstname)+" "+ (str(self.othername) if self.othername else "")
 
         loop_it = True
 
@@ -248,19 +258,6 @@ class Employee(models.Model):
             self.surname = self.surname.upper() if self.surname else ""
             self.othername = self.othername.upper() if self.othername else ""
 
-          super(Employee, self).save(*args, **kwargs)
-
-       
-
-    class Meta:
-       indexes = [ 
-         models.Index(fields=["is_system_user",]),
-         models.Index(fields=["NIN",]),
-         models.Index(fields=["NSSF_NO",]),
-         models.Index(fields=["deleted",]),
-       ]
+        super(Employee, self).save(*args, **kwargs)
 
 
-
-
-#class Generate

@@ -1,0 +1,38 @@
+<div  class="collapse" id="filter-table">
+    <form method="POST" action="{% url 'finance:list-cashbook' %}">
+        {% csrf_token %}
+        <table>
+        <tr><td colspan="2">
+            <label>Station</label>
+            <select name="stationID-id">
+                {% for station in all_stations %}
+                <option value="{{station.id}}">{{station.station_name}}</option>
+                {% endfor %} 
+            </select>
+        </td></tr>
+        <tr>
+        <td>
+            <label>From</label>
+            <input type="date" name="date1" placeholder="Enter from date" required />
+        </td>
+        <td>
+            <label>To</label>
+            <input type="date" name="date2" placeholder="Enter to date" required />
+        </td>
+         <td > <button style="width:80px;" type="submit" class="btn btn-info btn-sm"><i class="fa fa-arrow-right"></i> &nbsp;Load</button></td>
+        </tr>
+        </table>
+
+    </form>
+</div>
+
+<table style="margin-top: 5px;">
+    <tr>
+        <td >
+    <button class="btn btn-sm btn-info" data-bs-toggle="collapse" data-bs-target="#filter-table"
+    style="font-weight: bold; padding: 5px;"><i class="fa fa-filter"></i>&nbsp; Filter</button>
+    </td>
+    <td >      
+     <button class="export-to-excel btn btn-info btn-sm"><i class="fa fa-file"></i>&nbsp; Export To Excel</button>
+    </td></tr>
+    </table>

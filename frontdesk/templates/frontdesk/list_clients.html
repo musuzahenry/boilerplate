@@ -1,0 +1,132 @@
+
+
+{% extends 'frontdesk/index.html' %}
+
+
+{% block content %}
+{% include request.session.current_header %}
+
+
+    <div class="row">
+        <div class="col-md-3 col-12">    
+            <div  class="collapse" id="filter-table">
+                <form method="POST" action="{% url 'frontdesk:list-clients' %}">
+                    {% csrf_token %}
+                    <table>
+                    <tr><td colspan="2">
+                        <label>Station</label>
+                        <select name="stationID-id">
+                            {% for station in all_stations %}
+                            <option value="{{station.id}}">{{station.station_name}}</option>
+                            {% endfor %} 
+                        </select>
+                    </td></tr>
+                    <tr>
+                    <td>
+                        <label>From</label>
+                        <input type="date" name="date1" placeholder="Enter from date" required />
+                    </td>
+                    <td>
+                        <label>To</label>
+                        <input type="date" name="date2" placeholder="Enter to date" required />
+                    </td>
+                     <td > <button style="width:80px;" type="submit" class="btn btn-info btn-sm"><i class="fa fa-arrow-right"></i> &nbsp;Load</button></td>
+                    </tr>
+                    </table>
+            
+                </form>
+            </div>
+            
+            <table style="margin-top: 5px;">
+                <tr>
+                    <td >
+                <button class="btn btn-sm btn-info" data-bs-toggle="collapse" data-bs-target="#filter-table"
+                style="font-weight: bold; padding: 5px;"><i class="fa fa-filter"></i>&nbsp; Filter</button>
+                </td>
+                <td >      
+                 <button class="export-to-excel-client btn btn-info btn-sm"><i class="fa fa-file"></i>&nbsp; Export To Excel</button>
+                </td></tr>
+                </table>
+            
+    </div>
+
+
+    <div class="row">
+        <div class="col-12">
+        <form action="{% url 'frontdesk:list-clients' %}" method="POST" 
+        style="border:1px solid rgb(218, 218, 218); padding:20px; margin-top: 10px; border-radius: 8px;">
+            {% csrf_token %}
+            <input type="text" name="search_str" style="width:90%; line-height: 30px; border:1px solid black;" placeholder="Search clients using name/client_NO/contacts/NIN">
+            <button type="submit" class="btn btn-sm btn-info" style="width:50px;">Load</button>
+        </form>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12">
+        <h4 class="page-title">Client List</h4>
+        </div>
+    </div>
+
+
+
+<div class="row">
+     <div class="col-12">
+
+        <table class="table table-striped table-bordered"  id="list-clients">
+        <thead>
+            <tr class="bg-info text-white">
+                
+                <td>Branch</td>
+                <td>Record Date</td>
+                <td>Client NO:</td>
+                <td>Fullname</td>
+                <td>Contacts</td>
+                <td>Address</td>
+            </tr>
+        </thead>
+        <tbody>
+
+        {% for client in object_list %}
+        <tr>
+            
+        <td><a href="{% url 'frontdesk:set-current-client-by-click' client.pk %}">{{client.stationID}}</a> </td>
+        <td><a href="{% url 'frontdesk:set-current-client-by-click' client.pk %}">{{client.record_date}}</a> </td>
+        <td><a href="{% url 'frontdesk:set-current-client-by-click' client.pk %}">{{client.client_NO}}</a> </td>
+        <td><a href="{% url 'frontdesk:set-current-client-by-click' client.pk %}">{{client.fullname}}</a></td>
+        <td><a href="{% url 'frontdesk:set-current-client-by-click' client.pk %}">{{client.contacts}} </a></td>
+        <td><a href="{% url 'frontdesk:set-current-client-by-click' client.pk %}">{{client.address}} </a></td>
+        </td>
+        </tr>
+        {% endfor %}
+        </form>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="8">Count: {{count}}</td>
+            </tr>
+        </tfoot>
+        </table>
+
+
+
+     </div>
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+{% include request.session.current_footer %}
+
+
+
+
+{% endblock %}
+

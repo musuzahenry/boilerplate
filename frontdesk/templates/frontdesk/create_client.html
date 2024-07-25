@@ -1,0 +1,57 @@
+
+
+{% extends 'main/index.html' %}
+
+{% block content %}
+    {% include request.session.current_header %}
+
+    <div class="row">
+      <div class="col-12">
+         <h3 class="page-title">ADD CLIENT</h3>
+      </div>
+    </div>
+
+<div class="row">
+  <div class="col-12">
+     <form method="POST"  enctype="multipart/form-data">
+          {% csrf_token %}          
+            <div class ="row">
+              <div class ="col-12 col-md-2"></div>
+              <div class="col-12 col-md-4">
+
+              <label style="width:100%;">Surname</label>
+              <input  id="paper-editID" style="width:100%;" type="text" name="surname" required />
+              <label style="width:100%;">First Name</label>
+              <input  id="firstname" style="width:100%;" type="text" name="firstname" required />
+              <label style="width:100%;">Other Names</label>
+              <input  id="othername" style="width:100%;" type="text" name="othernames" />
+              <label style="width:100%;" for="gender">Gender</label>
+              <select style="width:100%;" name="gender">
+                <option value="--">--Choose--</option>
+                <option value="Male">Male</option>
+                <option value="Male">Female</option>
+              </select>          
+            </div>   
+
+            <div class="col-12 col-md-4">
+
+              <label style="width:100%;">Date Of Birth</label>
+              <input  id="date" style="width:100%;" type="date" name="date_of_birth" required />
+              <label style="width:100%;">Contacts(Comma Separated)</label>
+              <input  id="contacts" style="width:100%;" type="text" name="contacts" required />
+              <label style="width:100%;">Address</label>
+              <input  id="address" style="width:100%;" type="text" name="address" />
+  
+              <button style="margin-top: 4px;" class="btn btn-sm btn-info">Submit</button>              
+            </div> 
+
+               </div>
+          
+     </form>
+     </div>
+</div>
+
+
+    {% include request.session.current_footer %}
+{% endblock%}
+
